@@ -7,25 +7,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class Student extends User
+public class Student
 {
-    //String userId ;
-    //String role ;
-    //String username ;
-    //String email ;
-    //String passwordHash ;
+    String userId ;
+    String role ;
+    String username ;
+    String email ;
+    String passwordHash ;
     ArrayList <String> enrolledCourses ;
     double progress ;
 
     public Student(String userId, String role, String username, String email, String passwordHash , double progress)
     {
-        //this.userId = userId;
-        //this.role = role;
-        //this.username = username;
-        //this.email = email;
-        //this.passwordHash = passwordHash;
+        this.userId = userId;
+        this.role = role;
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
 
-        super(userId,role,username,email,passwordHash);
+        //super(userId,role,username,email,passwordHash);
         this.enrolledCourses = new ArrayList<>() ;
         this.progress = progress;
     }

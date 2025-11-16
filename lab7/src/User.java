@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.ArrayList;
 public class User {
     
-    private List<Student> students;
-    private List<Instructor> instructors;
+    private static List<Student> students;
+    private static List<Instructor> instructors;
     private String filename;
     
-    public User() {
+    public User(String filename) {
+        this.filename=filename;
          students = new ArrayList<>();
         instructors = new ArrayList<>();
     }

@@ -71,7 +71,8 @@ public class Student
         UpdateProgressAndEnrolledCourses();
 
         course.AddStudent(this);
-        Courses.SaveToJsonCourses() ;
+        Courses courses=new Courses("courses.json");
+        courses.SaveToJsonCourses();
     }
 
     public void UpdateProgressAndEnrolledCourses()
@@ -84,7 +85,7 @@ public class Student
             for ( int i = 0 ; i < data.length() ; i ++ )
             {
                 JSONObject obj = data.getJSONObject(i);
-                if (obj.getString("userId").equals(String.valueOf(super.getUserId())))
+                if (obj.getString("userId").equals(String.valueOf(userId)))
                 {
                     obj.put("progress", progress ) ;
                     obj.put("enrolledCourses", enrolledCourses) ;

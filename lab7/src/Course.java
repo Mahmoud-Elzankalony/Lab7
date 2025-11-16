@@ -11,6 +11,22 @@ public class Course {
     private String description;
     private int instructorId;
 
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setInstructorId(int instructorId) {
+        this.instructorId = instructorId;
+    }
+
     // private ArrayList<Lesson> lessons;
     private ArrayList<Student> studentsIncourse;
 
@@ -22,7 +38,9 @@ public class Course {
         // this.lessons = new ArrayList<>();
         this.studentsIncourse = new ArrayList<>();
     }
-
+    
+    
+    
     public void AddStudent(Student student)
     {
         studentsIncourse.add(student);
@@ -43,7 +61,7 @@ public class Course {
     //     return lessons;
     // }
 
-    public void saveToJSON() {
+    /*public void saveToJSON() {
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -73,7 +91,7 @@ public class Course {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     // public void displayAllCourses() {

@@ -1,0 +1,62 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author mahmoud-elzankalony
+ */
+public class Instructor{
+    private String userId ;
+    private String role ;
+    private String username ;
+    private String email ;
+    private String passwordHash ;
+    
+    ArrayList<Course> createdCourses = new ArrayList<>();
+    Courses courses= new Courses("src/courses.json");
+    
+    public Instructor(String userId, String role, String username, String email, String passwordHash) throws IOException
+    {
+        this.userId = userId;
+        this.role = role;
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        courses.load();
+    }
+    
+    public void Createcourse(int courseId, String title, String description, int instructorId) throws IOException
+    {
+        Course course = new Course(courseId,title,description,instructorId);
+        courses.addCourse(course);
+        courses.SaveToJsonCourses();
+    }
+    
+    public void Editcourse(Course course,int courseId, String title, String description, int instructorId) throws IOException
+    {
+        if(courseId != 0)
+            course.setCourseId(courseId);
+        if(title != null)
+            course.setTitle(title);
+        if(description != null)
+            course.setDescription(description);
+        if(instructorId != 0)
+            course.setInstructorId(instructorId);
+        courses.SaveToJsonCourses();
+    }
+    
+   public void deleteCourse(int courseId) throws IOException
+    {
+        for(Course course : courses.getCourses()){
+            if(course.getCourseId()==courseId)
+                courses.deleteCourse(course);
+                break;
+        }
+        courses.SaveToJsonCourses();
+    }
+}

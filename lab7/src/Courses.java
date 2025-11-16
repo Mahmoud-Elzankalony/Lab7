@@ -1,37 +1,61 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileWriter;
 import java.io.IOException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.ArrayList;
 
 public class Courses
 {
-    static ArrayList<Course> courses;
-    String FileName;
+    private static ArrayList<Course> courses;
+    private String FileName;
 
     public Courses(String FileName)
     {
-        this.FileName = FileName;
-        this.courses =  new ArrayList<>();
+        this.FileName = FileName; 
     }
 
     public ArrayList<Course> getCourses()
     {
         return courses;
     }
-
-    public String getFileName()
+   
+    public void load() throws IOException {
+        
+            Gson gson = new Gson();
+            String json = new String(Files.readAllBytes(Paths.get(FileName)));
+            
+            courses = gson.fromJson(json, new TypeToken<List<Student>>() {}.getType());
+    }
+    
+    public void addCourse(Course course)
     {
-        return FileName;
+    courses.add(course);
+    }
+    
+    public void deleteCourse(Course course)
+    {
+    courses.remove(course);
     }
 
-    public void setFileName(String FileName)
-    {
-        this.FileName = FileName;
+      public void SaveToJsonCourses() throws IOException
+      {
+           try (FileWriter writer = new FileWriter(FileName)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(this, writer);
+        } catch (Exception e) {
+            System.out.println("Error Saving File: " + e.getMessage());
+        }
     }
-
-    public static void SaveToJsonCourses()
+        } 
+    /*public void SaveToJsonCourses()
     {
         JSONArray arr = new JSONArray();
 
@@ -47,5 +71,4 @@ public class Courses
         {
             e.printStackTrace();
         }
-    }
-}
+    }*/

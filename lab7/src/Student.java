@@ -34,7 +34,7 @@ public class Student
     {
         try
         {
-            String content = new String(Files.readAllBytes(Paths.get("courses.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/courses.json")));
             JSONArray array = new JSONArray(content);
 
             int flag = 0 ;
@@ -65,13 +65,13 @@ public class Student
         }
     }
 
-    public void enroll ( Course course )
+    public void enroll ( Course course ) throws IOException
     {
         enrolledCourses.add(String.valueOf(course.getCourseId()))  ;
         UpdateProgressAndEnrolledCourses();
 
         course.AddStudent(this);
-        Courses courses=new Courses("courses.json");
+        Courses courses=new Courses("src/courses.json");
         courses.SaveToJsonCourses();
     }
 

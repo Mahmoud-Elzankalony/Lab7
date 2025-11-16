@@ -6,21 +6,19 @@ import java.util.List;
 import java.util.ArrayList;
 public class User {
     
-    private static List<Student> students;
-    private static List<Instructor> instructors;
+    private static ArrayList<Student> students;
+    private static ArrayList<Instructor> instructors;
     private String filename;
     
     public User(String filename) {
         this.filename=filename;
-         students = new ArrayList<>();
-        instructors = new ArrayList<>();
     }
 
-    public List<Student> getStudents() {
+    public ArrayList<Student> getStudents() {
         return students;
     }
 
-    public List<Instructor> getInstructors() {
+    public ArrayList<Instructor> getInstructors() {
         return instructors;
     }
     

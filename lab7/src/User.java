@@ -1,3 +1,4 @@
+package lab7;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -59,12 +60,12 @@ public class User {
     }
 }
 
-    public Student searchStudentById(String userId)
+    public Student searchStudentById(String email)
     {
         
             for ( Student student : students )
             {
-                if ( student.getUserId().equals(userId) )
+                if ( student.getEmail().equals(email) )
                 {
                     return student ;
                 }
@@ -72,12 +73,12 @@ public class User {
        
         return null;
     }
-    public Instructor searchInstructorById(String userId)
+    public Instructor searchInstructorById(String email)
     {
         
             for ( Instructor instructor : instructors )
             {
-                if ( instructor.getUserId().equals(userId) )
+                if ( instructor.getEmail().equals(email) )
                 {
                     return instructor ;
                 }

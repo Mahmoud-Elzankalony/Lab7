@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+package lab7;
 
 import java.awt.HeadlessException;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class InstructorDashboardFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InstructorDashboardFrame.class.getName());
-    Courses courses= new Courses("src/courses.json");
+    Courses courses= new Courses("courses.json");
     Instructor instructor;
     /**
      * Creates new form InstructorDashboardFrame
@@ -24,8 +26,8 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
      */
     public InstructorDashboardFrame(Instructor instructor) throws IOException {
         initComponents();
-        courses.load();
         this.instructor=instructor; 
+        courses.load();
         Home.setVisible(true);
         Createcourse.setVisible(false);
         Editcourse.setVisible(false);
@@ -145,7 +147,6 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         });
 
         jButton2.setText("Edit Course");
-        jButton2.setActionCommand("Edit Course");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -251,6 +252,13 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
 
         jTextField8.setEditable(false);
         jTextField8.setText("Enter InstructorId");
+
+        jTextField9.setEditable(false);
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("ok");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -1071,7 +1079,7 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
 
         getContentPane().add(Deletelesson, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        View.setPreferredSize(new java.awt.Dimension(690, 570));
+        View.setPreferredSize(new java.awt.Dimension(1000, 540));
 
         jTable7.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1137,7 +1145,8 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         });
         jScrollPane7.setViewportView(jTable7);
 
-        jButton21.setText("Select Student");
+        jButton21.setText("Select Course");
+        jButton21.setActionCommand("Select Course");
         jButton21.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton21ActionPerformed(evt);
@@ -1211,7 +1220,7 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(ViewLayout.createSequentialGroup()
                 .addGap(184, 184, 184)
                 .addComponent(jButton21)
@@ -1230,7 +1239,7 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
                 .addGroup(ViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton21)
                     .addComponent(jButton22))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         getContentPane().add(View, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -1273,6 +1282,7 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         Editlesson.setVisible(false);
         Deletelesson.setVisible(false);
         View.setVisible(false);
+        jTextField9.setText(String.valueOf(instructor.getUserId()));
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -1390,7 +1400,7 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         Editlesson.setVisible(false);
         Deletelesson.setVisible(false);
         View.setVisible(true);
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable7.getModel();
         model.setRowCount(0); // clear existing rows
         int counter = 1;
         for (Course  course : courses.getCourses()) {
@@ -1475,10 +1485,13 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         if(courseid != 0 && title != null && InstructorId != 0 && description != null)
         {
             try {
-                instructor.Createcourse(courseid, title, description, InstructorId);
+                instructor.Createcourse( String.valueOf(courseid), title, description );
             } catch (IOException ex) {
                 System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
+            jTextField3.setText("");
+            jTextField5.setText("");
+            jTextField7.setText("");
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -1487,8 +1500,8 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         int courseid=0;
         String title=jTextField13.getText();
         String description=jTextField15.getText();
-        int InstructorId=0;
-        boolean flag1=true,flag2=true;
+        String InstructorId=(String) instructor.getUserId();
+        boolean flag1=true;
         if(jTextField11.getText()!=null){
         try{Integer.valueOf(jTextField11.getText());
         if(Integer.parseInt(jTextField11.getText()) > 999)
@@ -1512,35 +1525,27 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
             flag1=false;
             
         }}
-         if(jTextField17.getText()!=null){
-        try{Integer.valueOf(jTextField17.getText());
-        if(Integer.parseInt(jTextField17.getText()) > 999)
-                InstructorId=Integer.parseInt(jTextField17.getText());
-                        else{
-            JOptionPane.showMessageDialog(this,
-                                "❌id must be greater than 999",
-                                "Invalid ID",
-                                JOptionPane.ERROR_MESSAGE);
-            jTextField17.setText("");
-            flag2=false;
-        }}
-        catch(HeadlessException | NumberFormatException e)
-        {
-            JOptionPane.showMessageDialog(this,
-                                "❌id ust be Integer",
-                                "Invalid ID",
-                                JOptionPane.ERROR_MESSAGE);
-            jTextField17.setText("");
-            flag2=false;
-            
-        }}
-        if(flag1&&flag2)
+        if(flag1)
         {    
             
             try {
                 for(Course c : courses.getCourses())
-                    if(c.getCourseId() == Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(),1).toString()))
-                        instructor.Editcourse(c,courseid, title, description, InstructorId);
+                    if(c.getCourseId().equals(jTable1.getValueAt(jTable1.getSelectedRow(),1)))
+                        instructor.Editcourse(c,String.valueOf(courseid), title, description, String.valueOf(InstructorId));
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // clear existing rows
+
+        int counter = 1;
+        for (Course  course : courses.getCourses()) {
+            Object[] row = {
+                    counter++,
+                course.getCourseId(),
+                    course.getTitle(),
+                    course.getDescription(),
+                    course.getInstructorId()
+            };
+            model.addRow(row);
+        }
             } catch (IOException ex) {
                 System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -1595,7 +1600,8 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
             jTextField11.setEditable(true);
             jTextField13.setEditable(true);
             jTextField15.setEditable(true);
-            jTextField17.setEditable(true);
+            jTextField17.setEditable(false);
+            jTextField17.setText(String.valueOf(instructor.getUserId()));
             jButton9.setEnabled(true);
         }}
     }//GEN-LAST:event_jButton11ActionPerformed
@@ -1605,10 +1611,24 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         if (selectedRow == -1) { 
     JOptionPane.showMessageDialog(this, "Please select a row from the table first!");
 } else { 
-        int option=JOptionPane.showConfirmDialog(this, "Are you sure you want to Update this student?", "Update",JOptionPane.YES_NO_OPTION);
+        int option=JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this student?", "Update",JOptionPane.YES_NO_OPTION);
         if(option==0){
             try {
-                instructor.deleteCourse(Integer.parseInt( jTable2.getValueAt(jTable2.getSelectedRow(),1).toString()));
+                instructor.deleteCourse(jTable2.getValueAt(jTable2.getSelectedRow(),1).toString());
+                DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0); // clear existing rows
+
+        int counter = 1;
+        for (Course  course : courses.getCourses()) {
+            Object[] row = {
+                    counter++,
+                course.getCourseId(),
+                    course.getTitle(),
+                    course.getDescription(),
+                    course.getInstructorId()
+            };
+            model.addRow(row);
+        }
             } catch (IOException ex) {
                 System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -1688,10 +1708,10 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         }
         if(lessonid != 0 && title != null && content != null)
         {
-            try {
-                for(Course c : courses.getCourses())
-                    if(c.getCourseId() == Integer.parseInt( jTable6.getValueAt(jTable6.getSelectedRow(),1).toString()))
-                instructor.Createlesson(c,lessonid,title, content);
+            for(Course c : courses.getCourses())
+                if(c.getCourseId().equals(jTable6.getValueAt(jTable6.getSelectedRow(),1).toString()))
+                    try {
+                        instructor.Createlesson(c,String.valueOf(lessonid),title, content);
             } catch (IOException ex) {
                 System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -1740,17 +1760,31 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         if(flag1)
         {    
             
-            try {
-                for(Course c : courses.getCourses())
-                    if(c.getCourseId() == Integer.parseInt( jTable4.getValueAt(jTable4.getSelectedRow(),1).toString()))
-                    {for(Lesson l :c.getLessons()){
-                        if(l.getLessonId() == Integer.parseInt( jTable4.getValueAt(jTable4.getSelectedRow(),2).toString()))
-                            instructor.Editlesson(c,l,courseid, title, Content);break;}
-                        break;}
-                        
-            } catch (IOException ex) {
-                System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
+            for(Course c : courses.getCourses())
+                if(c.getCourseId().equals(jTable4.getValueAt(jTable4.getSelectedRow(),1).toString()))
+                {for(Lesson l :c.getLessons()){
+                    if(l.getLessonId().equals(jTable4.getValueAt(jTable4.getSelectedRow(),2).toString()))
+                        try {
+                            instructor.Editlesson(c,l,String.valueOf(courseid), title, Content);
+                            DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        model.setRowCount(0); // clear existing rows
+
+        int counter = 1;
+        for (Course  course : courses.getCourses()) {
+            for(Lesson lesson : course.getLessons())
+            {Object[] row = {
+                    counter++,
+                course.getCourseId(),
+                    lesson.getLessonId(),
+                    lesson.getTitle(),
+                    lesson.getContent()
+            };
+            model.addRow(row);}
+        }
+                    } catch (IOException ex) {
+                        System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }break;}
+                break;}
         }
     }//GEN-LAST:event_jButton19ActionPerformed
 
@@ -1800,10 +1834,25 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         if(option==0){
             try {
                 for(Course c : courses.getCourses())
-                    if(c.getCourseId() == Integer.parseInt( jTable5.getValueAt(jTable5.getSelectedRow(),1).toString()))
+                    if(c.getCourseId().equals(jTable5.getValueAt(jTable5.getSelectedRow(),1).toString()))
                     {for(Lesson l :c.getLessons()){
-                        if(l.getLessonId() == Integer.parseInt( jTable5.getValueAt(jTable5.getSelectedRow(),2).toString()))
+                        if(l.getLessonId().equals(jTable5.getValueAt(jTable5.getSelectedRow(),2).toString()))
                 instructor.Deletelesson(c,l.getLessonId());
+                        DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+        model.setRowCount(0); // clear existing rows
+
+        int counter = 1;
+        for (Course  course : courses.getCourses()) {
+            for(Lesson lesson : course.getLessons())
+            {Object[] row = {
+                    counter++,
+                course.getCourseId(),
+                    lesson.getLessonId(),
+                    lesson.getTitle(),
+                    lesson.getContent()
+            };
+            model.addRow(row);}
+        }
                         break;}}
             } catch (IOException ex) {
                 System.getLogger(InstructorDashboardFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -1823,13 +1872,17 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton20ActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+
         for(Course c : courses.getCourses())
-                    if(c.getCourseId() == Integer.parseInt( jTable3.getValueAt(jTable3.getSelectedRow(),1).toString())){
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    if(c.getCourseId().equals(jTable7.getValueAt(jTable7.getSelectedRow(),1).toString())){
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         model.setRowCount(0); // clear existing rows
+        System.out.print("bbv");
         int counter = 1;
         for (Student  student: c.getStudentsIncourse()) {
+            System.out.print("bbv");
             Object[] row = {
+                
                     counter++,
                 student.getUserId(),
                     student.getRole(),
@@ -1851,30 +1904,13 @@ public class InstructorDashboardFrame extends javax.swing.JFrame {
         View.setVisible(false);
     }//GEN-LAST:event_jButton22ActionPerformed
 
+    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InstructorDashboardFrame().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;

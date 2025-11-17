@@ -1,3 +1,4 @@
+package lab7;
 import java.util.ArrayList;
 
 public class Login {
@@ -9,7 +10,7 @@ public class Login {
 
 
     public Login() {
-        this.user = new User("src/users.json");
+        this.user = new User("users.json");
         user.load();
         this.allStudents = user.getStudents() ;
         this.allInstructors = user.getInstructors() ;

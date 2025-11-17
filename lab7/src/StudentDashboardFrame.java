@@ -1,31 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
+package lab7;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.ListSelectionEvent;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
  * @author fawaa
  */
-public class StudentDashboardFrame extends javax.swing.JFrame {
+public class StudentDashboardFrame extends javax.swing.JFrame
+{
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StudentDashboardFrame.class.getName());
-    Student student ;
+    DefaultListModel<Course> modelofcourses = new DefaultListModel<>(); // For Search Results (jList3)
+    DefaultListModel<Course> previousCourses = new DefaultListModel<>(); // For Enrolled Courses (jList2)
     /**
      * Creates new form StudentDashboardFrame
      */
+    Student student ;
     public StudentDashboardFrame(Student student)
     {
-        initComponents();
         this.student = student ;
+        initComponents();
+        // CALL THE METHOD TO LOAD DATA IMMEDIATELY AFTER COMPONENTS ARE INITIALIZED
+        loadPreviousCourses();
+    }
 
+    // --- NEW METHOD TO LOAD PREVIOUS COURSES ---
+    private void loadPreviousCourses() {
+        // Clear existing data (important if called multiple times, though usually not needed here)
+        previousCourses.clear();
+        DefaultListModel<String> previousTitles = new DefaultListModel<>();
+
+        // Assuming 'student.enrolledCourses' is populated upon creating the Student object
+        for (Course course : student.enrolledCourses)
+        {
+            previousTitles.addElement(course.getTitle());
+            previousCourses.addElement(course); // Store the Course object in the dedicated model
+        }
+
+        jList2.setModel(previousTitles);
+        // jList2.setVisible(true); // Setting visible is not usually necessary here as JFrame does it
     }
 
     /**
@@ -35,7 +56,8 @@ public class StudentDashboardFrame extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -43,9 +65,9 @@ public class StudentDashboardFrame extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new JList<Course>();
+        jList2 = new JList<String>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new JList<Course>();
+        jList3 = new JList<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -69,29 +91,37 @@ public class StudentDashboardFrame extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
-
+        /*
         jList2.setModel(new AbstractListModel<Course>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+         */
         jList2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList2MouseClicked(evt);
+                try {
+                    jList2MouseClicked(evt);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        jList2.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jList2ComponentShown(evt);
-            }
-        });
+        // Removed jList2ComponentShown logic as it's now handled by loadPreviousCourses()
+        // jList2.addComponentListener(new java.awt.event.ComponentAdapter() {
+        //     public void componentShown(java.awt.event.ComponentEvent evt) {
+        //         jList2ComponentShown(evt);
+        //     }
+        // });
         jScrollPane2.setViewportView(jList2);
 
+        /*
         jList3.setModel(new AbstractListModel<Course>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+         */
         jList3.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jList3AncestorAdded(evt);
@@ -103,7 +133,11 @@ public class StudentDashboardFrame extends javax.swing.JFrame {
         });
         jList3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList3MouseClicked(evt);
+                try {
+                    jList3MouseClicked(evt);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         jList3.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -118,7 +152,7 @@ public class StudentDashboardFrame extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jList3);
 
-        jLabel5.setText("HI");
+        jLabel5.setText("HI" + " " + student.getUsername().toUpperCase());
         jLabel5.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 jLabel5ComponentShown(evt);
@@ -178,253 +212,175 @@ public class StudentDashboardFrame extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
-
-    private void jList3AncestorAdded(AncestorEvent evt) {
     }
 
-    private void jList3ValueChanged(ListSelectionEvent evt) {
+    private void jLabel5ComponentShown(ComponentEvent evt) {
+        // No action needed here
     }
 
-    private void jList2MouseClicked(MouseEvent evt) {
+    private void jList3AncestorAdded(AncestorEvent evt)
+    {
+        // No action needed here
+    }
+    private void jList3ValueChanged(ListSelectionEvent evt)
+    {
+        // No action needed here
     }
 
-    /*
-     searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String id = idTextField.getText().trim();
-                if (!id.isEmpty()) {
-                    // Here you can implement your actual search logic
-                    JOptionPane.showMessageDialog(null, "Searching for ID: " + id);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter an ID!");
-                }
-            }
-        });
-    */
+
+
+
+
+    // for search (jList3)
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)
     {
-        // for search
         String courseTitle = jTextField1.getText().trim();
-        if ( courseTitle.isEmpty())
+
+        if (courseTitle.isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "Please enter a course ID");
+            JOptionPane.showMessageDialog(this, "Please enter a course tile");
+            return;
         }
-        else
+
+        // Clear previous search results before adding new ones
+        modelofcourses.clear();
+        DefaultListModel<String> modeloftitles = new DefaultListModel<>();
+
+        ArrayList<Course> results = student.search(courseTitle);
+
+        if (results == null || results.isEmpty())
         {
-            DefaultListModel<Course> model = new DefaultListModel<>();
-
-            for ( JSONObject element : student.search(courseTitle) )
-            {
-                model.addElement(new Course(Integer.parseInt(element.getString("courseId")), element.getString("title") , element.getString("description") , Integer.parseInt(element.getString("instructorId"))));
-            }
-
-            if (model.isEmpty())
-            {
-                JOptionPane.showMessageDialog(this, "No courses found with title: " + courseTitle);
-            }
-
-            jList3.setModel(model);
+            JOptionPane.showMessageDialog(this, "No course found");
+            return;
         }
+
+        for (Course course : results)
+        {
+            modelofcourses.addElement(course);
+            modeloftitles.addElement(course.getTitle());
+        }
+        jList3.setModel(modeloftitles);
     }
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt)
     {
-        // for search
+        // No action needed here
     }
-    private void jList3ComponentShown(java.awt.event.ComponentEvent evt)
+    private void jList3ComponentShown(ComponentEvent evt)
     {
-        // write courses according to the search
+        // write courses according to the search - This is handled in jButton1ActionPerformed
     }
 
-    private void jList3MouseClicked(java.awt.event.MouseEvent evt)
+    private void jList3MouseClicked(java.awt.event.MouseEvent evt) throws IOException
     {
         // open course window ?? search
         if (evt.getClickCount() == 2)
         {
-            Course selected = jList3.getSelectedValue();
-            if (selected != null)
+            String selectedtitle = jList3.getSelectedValue();
+            if (selectedtitle != null)
             {
-                // open new window
-                new CourseWindow (selected , student ) ;
+                Course selectedcourse = null;
+                // Iterate through the modelofcourses (the one holding Course objects)
+                for (int i = 0; i < modelofcourses.getSize(); i++)
+                {
+                    if (selectedtitle.equals(modelofcourses.get(i).getTitle()))
+                    {
+                        selectedcourse = modelofcourses.get(i);
+                        break;
+                    }
+                }
+                if (selectedcourse != null) {
+                    new CourseWindow(selectedcourse, student).setVisible(true);
+                }
             }
         }
     }
-    /*
-    jList2.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
-                if (evt.getClickCount() == 2)
-                {
-                    Course selected = jList2.getSelectedValue();
-                    if (selected != null)
-                    {
-                        // open new window
-                         new CourseWindow (selected , student ) ;
-                    }
-                }
-            }
-        });
-     */
 
-    /*
-    private void jList2MouseClicked(java.awt.event.MouseEvent evt) {
-        // open course window
+
+
+
+    // for previous (jList2)
+    private void jList2MouseClicked(java.awt.event.MouseEvent evt) throws IOException
+    {
+        // open course window 
         if (evt.getClickCount() == 2)
         {
-            Course selected = jList2.getSelectedValue();
-            if (selected != null)
+            // Get the selected title from jList2
+            String selectedtitle = jList2.getSelectedValue();
+            if (selectedtitle != null)
             {
-                // call the new window
-            }
-        }
-    }
-     */
-    /*
-    private void jList2ComponentShown(java.awt.event.ComponentEvent evt1) {
-        // write student courses
-        DefaultListModel<Course> model = new DefaultListModel<>();
-        for ( int i = 0 ; i < student.enrolledCourses.size() ; i++ )
-        {
-            model.addElement(student.enrolledCourses.get(i));
-        }
-
-        JList<Course> courseList = new JList<>(model);
-
-        java.awt.event.MouseEvent evt2 = new java.awt.event.MouseEvent() ;
-        if (evt2.getClickCount() == 2)
-        {
-            Course selected = courseList.getSelectedValue();
-            if (selected != null)
-            {
-                // call the new window
-            }
-        }
-    }
-    */
-    private void jList2ComponentShown(java.awt.event.ComponentEvent evt)
-    {
-        DefaultListModel<Course> model = new DefaultListModel<>();
-
-        for ( int i = 0 ; i < student.enrolledCourses.size() ; i++ )
-        {
-            model.addElement(student.enrolledCourses.get(i));
-        }
-
-        jList2.setModel(model);
-
-        jList2.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
-                if (evt.getClickCount() == 2)
+                Course selectedcourse = null;
+                // Find the Course object in the previousCourses model
+                for (int i = 0; i < previousCourses.getSize(); i++)
                 {
-                    Course selected = jList2.getSelectedValue();
-                    if (selected != null)
+                    if (selectedtitle.equals(previousCourses.get(i).getTitle()))
                     {
-                        // open new window
-                         new CourseWindow (selected , student ) ;
+                        selectedcourse = previousCourses.get(i);
+                        break;
+                    }
+                }
+
+                if (selectedcourse != null) {
+                    try {
+                        new CourseWindow(selectedcourse, student).setVisible(true);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
-        });
-    }
-
-    /*
-    public void openCourseWindowWithLessons(Course course)
-    {
-        // JFrame setup
-        JFrame frame = new JFrame(course.getTitle());
-        frame.setSize(500, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Main panel
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Course info panel
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(0, 1, 5, 5));
-        infoPanel.add(new JLabel("Course ID: " + course.getCourseId()));
-        infoPanel.add(new JLabel("Title: " + course.getTitle()));
-        infoPanel.add(new JLabel("Description: " + course.getDescription()));
-        infoPanel.add(new JLabel("Instructor ID: " + course.getInstructorId()));
-
-        mainPanel.add(infoPanel, BorderLayout.NORTH);
-
-        // Lessons panel with toggle buttons
-        JPanel lessonsPanel = new JPanel();
-        lessonsPanel.setLayout(new GridLayout(0, 1, 5, 5));
-
-        for (String lesson : /*course.getLessons()) {
-            JToggleButton lessonButton = new JToggleButton(lesson + " (Not Watched)");
-            lessonButton.addActionListener(e -> {
-                if (lessonButton.isSelected()) {
-                    lessonButton.setText(lesson + " (Watched)");
-                } else {
-                    lessonButton.setText(lesson + " (Not Watched)");
-                }
-            });
-            lessonsPanel.add(lessonButton);
         }
 
-        // Scroll pane for lessons if many
-        JScrollPane scrollPane = new JScrollPane(lessonsPanel);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        // --- REMOVED INCORRECT CODE ---
+        // The original code was incorrectly re-populating the list and adding a new listener
+        // every time the list was clicked. This is fixed by calling loadPreviousCourses() 
+        // in the constructor and keeping the click logic simple.
+        
+        /* Original incorrect code:
+        DefaultListModel<String> previousTitles = new DefaultListModel<>();
 
-        frame.add(mainPanel);
-        frame.setVisible(true);
+        for ( int i = 0 ; i < student.enrolledCourses.size() ; i++ )
+        {
+            previousTitles.addElement(student.enrolledCourses.get(i).getTitle());
+            previousCourses.addElement(student.enrolledCourses.get(i));
+        }
+
+        jList2.setModel(previousTitles);
+        jList2.setVisible(true);
+
+        jList2.addMouseListener(new java.awt.event.MouseAdapter()
+        { ... });
+        */
     }
-    */
 
-
-    private void jLabel5ComponentShown(java.awt.event.ComponentEvent evt)
+    // This is no longer needed because loadPreviousCourses() is called in the constructor.
+    private void jList2ComponentShown(java.awt.event.ComponentEvent evt)
     {
-        // write student name + "HI"
-        jLabel5.setText("HI" + " " + student.getUsername().toUpperCase());
+        // DefaultListModel <String> printedTitles = new DefaultListModel<>();
+        // for ( int i = 0 ; i < previousCourses.size() ; i++ )
+        // {
+        //     printedTitles.addElement(previousCourses.get(i).getTitle());
+        // }
+        // jList2.setModel(printedTitles);
+        // jList2.setVisible(true);
     }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[])
-    {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StudentDashboardFrame(/*create new student (after login)*/).setVisible(true));
-    }
 
-    // Variables declaration - do not modify
+
+
+// Variables declaration - do not modify
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private JList<Course> jList2;
-    private JList<Course> jList3;
+    private JList<String> jList2;
+    private JList<String> jList3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
-    // End of variables declaration
+// End of variables declaration
 }

@@ -1,3 +1,4 @@
+package lab7;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class SignUp {
 
 
     public SignUp() {
-        this.user = new User("src/users.json");
+        this.user = new User("users.json");
         user.load();
         this.allStudents = user.getStudents() != null ? user.getStudents() : new ArrayList<>();
         this.allInstructors = user.getInstructors() != null ? user.getInstructors() : new ArrayList<>();

@@ -1,209 +1,238 @@
+package lab7;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
-public class CourseWindow extends javax.swing.JFrame {
-
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CourseWindow.class.getName());
-
-    // Panel that will hold all dynamic checkboxes
+public class CourseWindow extends JFrame
+{
     private JPanel lessonsPanel;
-    ArrayList<String> lessons ;
-    static Course course ;
-    static Student student ;
-    // Constructor now takes a list of lessons
-    public CourseWindow( Course course , Student student ) {
-        this.course = course ;
-        this.student = student ;
-        //this.lessons = course.getLessons();
+
+    private JTextArea jTextAreaTitle;
+    private JTextArea jTextAreaCourseId;
+    private JTextArea jTextAreaInstructorId;
+    private JTextArea jTextAreaDescription;
+
+    private JButton enrollButton; // Button to enroll
+
+    ArrayList<Lesson> lessons;
+    static Course course;
+    static Student student;
+
+    public CourseWindow(Course course, Student student) throws IOException
+    {
+        this.course = course;
+        this.student = student;
+        this.lessons = course.getLessons();
         initComponents();
-        addLessonCheckboxes(lessons); // add dynamic checkboxes
+        
+        // 1. Call the method to generate checkboxes
+        addLessonCheckboxes(course.getLessons()); 
+
+        
+        updateEnrollButton();
     }
 
-    // Default constructor if needed
-    public CourseWindow() {
+    public CourseWindow()
+    {
         initComponents();
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new JLabel();
+        jLabel7 = new JLabel();
 
-        // Create lessons panel instead of a single checkbox
-        lessonsPanel = new javax.swing.JPanel();
-        lessonsPanel.setLayout(new javax.swing.BoxLayout(lessonsPanel, javax.swing.BoxLayout.Y_AXIS));
+        lessonsPanel = new JPanel();
+        lessonsPanel.setLayout(new BoxLayout(lessonsPanel, BoxLayout.Y_AXIS));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        // Title TextArea
+        jTextAreaTitle = createTextArea(course != null ? course.getTitle() : "", 20);
 
-        jLabel1.setText("CourseTitle");
-        jLabel2.setText("CourseId");
-        jLabel3.setText("Description");
-        jLabel4.setText("InstructorId");
+        // Course ID TextArea
+        jTextAreaCourseId = createTextArea(course != null ? String.valueOf(course.getCourseId()) : "", 16);
+
+        // Instructor ID TextArea
+        jTextAreaInstructorId = createTextArea(course != null ? String.valueOf(course.getInstructorId()) : "", 16);
+
+        // Description TextArea
+        jTextAreaDescription = createTextArea(course != null ? course.getDescription() : "", 16);
+        JScrollPane scrollPaneDescription = new JScrollPane(jTextAreaDescription);
+        scrollPaneDescription.setPreferredSize(new Dimension(300, 100));
+
+        // Enroll Button
+        enrollButton = new JButton();
+        enrollButton.setFont(new Font("Cambria", Font.BOLD, 20));
+
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); // Changed to DISPOSE to avoid closing the whole app
+
         jLabel6.setText("Lessons Of Course");
-        jLabel7.setText("Info");
+         // Ensure labels have text
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        // Layout
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(12, 12, 12)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lessonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(28, 28, 28)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(242, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lessonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(86, Short.MAX_VALUE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(75, 75, 75)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(184, Short.MAX_VALUE)))
+                                .addGap(20)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextAreaTitle)
+                                        .addComponent(jTextAreaCourseId)
+                                        .addComponent(scrollPaneDescription)
+                                        .addComponent(jTextAreaInstructorId)
+                                        .addComponent(enrollButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(50)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(lessonsPanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(20)
+                                .addComponent(jLabel7)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(10)
+                                .addComponent(jTextAreaTitle, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10)
+                                .addComponent(jTextAreaCourseId, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10)
+                                .addComponent(scrollPaneDescription, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10)
+                                .addComponent(jTextAreaInstructorId, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10)
+                                .addComponent(enrollButton, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(50, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(50)
+                                .addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                .addGap(5)
+                                .addComponent(lessonsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(180)
+                                .addComponent(jLabel7, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
     }
 
-    // Method to add dynamic checkboxes to lessonsPanel
-    private void addLessonCheckboxes(ArrayList<String> lessons) {
-        lessonsPanel.removeAll(); // Clear old checkboxes
-
-        for (String lesson : lessons) {
-            JCheckBox cb = new JCheckBox(lesson);
-            lessonsPanel.add(cb);
-        }
-
-        lessonsPanel.revalidate();
-        lessonsPanel.repaint();
+    // Helper to create non-editable JTextAreas for info
+    private JTextArea createTextArea(String text, int fontSize)
+    {
+        JTextArea area = new JTextArea(text);
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
+        area.setEditable(false);
+        area.setFont(new Font("Cambria", Font.BOLD, fontSize));
+        area.setOpaque(false); // Looks like JLabel
+        area.setBorder(null);
+        return area;
     }
-    private void jLabel5ComponentShown(java.awt.event.ComponentEvent evt) {
-        // enrolled or enroll
-        if (student.enrolledCourses.contains(course))
+
+    // 2. Implementation of the addLessonCheckboxes method
+    private void addLessonCheckboxes(ArrayList<Lesson> lessons)
+    {
+        lessonsPanel.removeAll(); // Clear previous components
+
+        if (lessons != null && !lessons.isEmpty())
         {
-            JLabel label = new JLabel("ENROLLED");
-            Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-            label.setFont(cambriaBold20);
-            jLabel5.setText("");
-            jLabel5.setLayout(new java.awt.BorderLayout());
-            jLabel5.add(label, BorderLayout.CENTER);
+            for (Lesson lesson : lessons)
+            {
+                // Create a checkbox for each lesson
+                JCheckBox cb = new JCheckBox();
+                cb.setText(lesson.getTitle());
+                cb.setFont(new Font("Cambria", Font.PLAIN, 14));
+                
+                // If needed, you can add logic here to check the box if the student already completed it
+                // Example: if(student.isLessonCompleted(lesson)) cb.setSelected(true);
+
+                lessonsPanel.add(cb);
+            }
         }
         else
         {
-            JButton button = new JButton("ENROLLED");
-            button.setFont(new Font("Cambria", Font.BOLD, 20));
+            JLabel emptyLabel = new JLabel("No lessons available.");
+            emptyLabel.setFont(new Font("Cambria", Font.ITALIC, 12));
+            lessonsPanel.add(emptyLabel);
+        }
 
-            button.addMouseListener(new java.awt.event.MouseAdapter()
-            {
-                public void mouseClicked(java.awt.event.MouseEvent evt)
+        // Refresh the panel to show changes
+        lessonsPanel.revalidate();
+        lessonsPanel.repaint();
+    }
+
+    // Update enroll button text and behavior
+    private void updateEnrollButton()
+    {
+        // Check if the student is already enrolled by comparing Course IDs
+        boolean isEnrolled = false;
+        if (student != null && student.enrolledCourses != null) {
+            for (Course c : student.enrolledCourses) {
+                if (c.getCourseId().equals(course.getCourseId())) {
+                    isEnrolled = true;
+                    break;
+                }
+            }
+        }
+
+        if (isEnrolled)
+        {
+            enrollButton.setText("ENROLLED");
+            enrollButton.setEnabled(false);
+            // Enable lessons only if enrolled
+            setLessonsEnabled(true);
+        } else
+        {
+            enrollButton.setText("ENROLL");
+            enrollButton.setEnabled(true);
+            // Disable lessons if not enrolled
+            setLessonsEnabled(false);
+            
+            enrollButton.addActionListener(e -> {
+                try
                 {
-                    if (evt.getClickCount() == 2)
-                    {
-                        student.enroll(course);
-                        JLabel label = new JLabel("ENROLLED");
-                        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-                        label.setFont(cambriaBold20);
-                        jLabel5.setText("");
-                        jLabel5.setLayout(new java.awt.BorderLayout());
-                        jLabel5.add(label, BorderLayout.CENTER);
-                    }
+                    student.enroll(course);
+                    enrollButton.setText("ENROLLED");
+                    enrollButton.setEnabled(false);
+                    setLessonsEnabled(true); // Enable lessons after enrolling
+                    JOptionPane.showMessageDialog(this, "You have successfully enrolled in " + course.getTitle());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
             });
-
         }
     }
-
-    private void jLabel1ComponentShown(java.awt.event.ComponentEvent evt) {
-        // course title
-        JLabel label = new JLabel(course.getTitle().toUpperCase());
-        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-        label.setFont(cambriaBold20);
-    }
-
-    private void jLabel7ComponentShown(java.awt.event.ComponentEvent evt) {
-        // INFO
-        JLabel label = new JLabel("INFO");
-        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-        label.setFont(cambriaBold20);
-    }
-
-    private void jLabel2ComponentShown(java.awt.event.ComponentEvent evt) {
-        // course id
-        JLabel label = new JLabel(String.valueOf(course.getCourseId()));
-        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-        label.setFont(cambriaBold20);
-    }
-
-    private void jLabel3ComponentShown(java.awt.event.ComponentEvent evt) {
-        // description
-        JLabel label = new JLabel(course.getDescription());
-        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-        label.setFont(cambriaBold20);
-    }
-
-    private void jLabel4ComponentShown(java.awt.event.ComponentEvent evt) {
-        // instructor id
-        JLabel label = new JLabel(String.valueOf(course.getInstructorId()));
-        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-        label.setFont(cambriaBold20);
-    }
-
-    private void jLabel6ComponentShown(java.awt.event.ComponentEvent evt) {
-        // LESSONS OF COURSE
-        JLabel label = new JLabel("LESSONS OF COURSE");
-        Font cambriaBold20 = new Font("Cambria", Font.BOLD, 20);
-        label.setFont(cambriaBold20);
+    
+    // Helper to enable/disable checkboxes based on enrollment status
+    private void setLessonsEnabled(boolean enabled) {
+        Component[] components = lessonsPanel.getComponents();
+        for (Component c : components) {
+            c.setEnabled(enabled);
+        }
     }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            //ArrayList<String> lessons = new ArrayList<>();
-            //Course course = new Course() ;
-            //new CourseWindow(lessons).setVisible(true);
-            new CourseWindow(course,student).setVisible(true);
+            try {
+                new CourseWindow(course, student).setVisible(true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
-    // Variables declaration
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    // Variables
+    private JLabel jLabel6;
+    private JLabel jLabel7;
 }
-

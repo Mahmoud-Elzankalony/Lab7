@@ -1,28 +1,26 @@
+package lab7;
 import java.util.ArrayList;
 
+// The primary class definition
 public class Lesson {
 
-    private int lessonId;
+    private String lessonId;
     private String title;
     private String content;
     private ArrayList<String> resources;
 
-    public Lesson() {
-        this.resources = new ArrayList<>();
-    }
-
-    public Lesson(int lessonId, String title, String content) {
+    public Lesson(String lessonId, String title, String content) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.resources = new ArrayList<>();
     }
 
-    public int getLessonId() {
+    public String getLessonId() {
         return lessonId;
     }
 
-    public void setLessonId(int lessonId) {
+    public void setLessonId(String lessonId) {
         this.lessonId = lessonId;
     }
 

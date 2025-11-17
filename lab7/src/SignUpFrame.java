@@ -1,3 +1,4 @@
+package lab7;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -177,7 +178,7 @@ public class SignUpFrame extends javax.swing.JFrame {
                 return;
             }
 
-        User userFile = new User("src/users.json");
+        User userFile = new User("users.json");
         userFile.load();
        
         SignUp signUp = new SignUp();

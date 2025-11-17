@@ -82,7 +82,38 @@
       "username": "ahmd1",
       "email": "ahmd1@gmail.com",
       "passwordHash": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
-      "enrolledCourses": [],
+      "enrolledCourses": [
+        {
+          "courseId": "C101",
+          "title": "Java Basics",
+          "lessons": [],
+          "studentsIncourse": []
+        },
+        {
+          "courseId": "C202",
+          "title": "Data Structures",
+          "lessons": [],
+          "studentsIncourse": []
+        },
+        {
+          "courseId": "103",
+          "title": "Web Development with JavaScript",
+          "lessons": [],
+          "studentsIncourse": []
+        },
+        {
+          "courseId": "104",
+          "title": "Data Science Fundamentals",
+          "lessons": [],
+          "studentsIncourse": []
+        },
+        {
+          "courseId": "105",
+          "title": "Machine Learning Basics",
+          "lessons": [],
+          "studentsIncourse": []
+        }
+      ],
       "progress": 0.0
     },
     {
@@ -479,6 +510,48 @@
       "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
       "enrolledCourses": [],
       "progress": 0.0
+    },
+    {
+      "userId": "5196",
+      "role": "student",
+      "username": "qq",
+      "email": "qq@gmail.com",
+      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "enrolledCourses": [],
+      "progress": 0.0
+    },
+    {
+      "userId": "9620",
+      "role": "student",
+      "username": "jj",
+      "email": "jj@gmail.com",
+      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "enrolledCourses": [
+        {
+          "courseId": "106",
+          "title": "Java Programming",
+          "lessons": [],
+          "studentsIncourse": []
+        },
+        {
+          "courseId": "102",
+          "title": "Advanced Python",
+          "lessons": [
+            {
+              "lessonId": "1",
+              "title": "Decorators and Generators",
+              "content": "Advanced concepts for functions and iteration."
+            },
+            {
+              "lessonId": "2",
+              "title": "Multithreading in Python",
+              "content": "Understanding the Global Interpreter Lock (GIL)."
+            }
+          ],
+          "studentsIncourse": []
+        }
+      ],
+      "progress": 0.0
     }
   ],
   "instructors": [
@@ -596,6 +669,28 @@
       "createdCourses": [],
       "courses": {
         "FileName": "src/courses.json"
+      }
+    },
+    {
+      "userId": "5941",
+      "role": "instructor",
+      "username": "ff",
+      "email": "ff@gmail.com",
+      "passwordHash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "createdCourses": [],
+      "courses": {
+        "FileName": "src/courses.json"
+      }
+    },
+    {
+      "userId": "4823",
+      "role": "instructor",
+      "username": "bggfdd",
+      "email": "hhgff@gm.com",
+      "passwordHash": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+      "createdCourses": [],
+      "courses": {
+        "FileName": "courses.json"
       }
     }
   ]

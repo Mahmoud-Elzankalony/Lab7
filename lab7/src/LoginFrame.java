@@ -1,9 +1,11 @@
+package lab7;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 // package skillfroge;
 
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,6 +41,7 @@ public class LoginFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         textField1.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textField1ActionPerformed(evt);
             }
@@ -54,7 +57,11 @@ public class LoginFrame extends javax.swing.JFrame {
         button1.setName(""); // NOI18N
         button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                try {
+                    button1ActionPerformed(evt);
+                } catch (IOException ex) {
+                    System.getLogger(LoginFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
             }
         });
 
@@ -127,7 +134,7 @@ public class LoginFrame extends javax.swing.JFrame {
         // password
     }                                          
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {                                        
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {                                        
         // login
         String email = textField1.getText();
         String password = textField2.getText();
@@ -142,12 +149,12 @@ public class LoginFrame extends javax.swing.JFrame {
 
              
              
-              new StudentDashboardFrame(new User("src/users.json").searchStudentById(email)).setVisible(true);
+              new StudentDashboardFrame(new User("users.json").searchStudentById(email)).setVisible(true);
          this.dispose();
             // Proceed to the next screen or functionality
         } else if (found == 2) {
             JOptionPane.showMessageDialog(this, "Login successful(Instructor)!");
-            // new InstructorDashboardFrame(new User("src/users.json").searchInstructorById(email)).setVisible(true);
+            new InstructorDashboardFrame(new User("users.json").searchInstructorById(email)).setVisible(true);
             this.dispose();
             // Proceed to the next screen or functionality
         } else {
@@ -192,10 +199,8 @@ public class LoginFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new LoginFrame().setVisible(true);
         });
     }
 

@@ -35,6 +35,7 @@ public class Instructor{
         Course course = new Course(courseId,title,description,instructorId);
         courses.addCourse(course);
         courses.SaveToJsonCourses();
+        courses.load();
     }
     
     public void Editcourse(Course course,int courseId, String title, String description, int instructorId) throws IOException
@@ -48,6 +49,7 @@ public class Instructor{
         if(instructorId != 0)
             course.setInstructorId(instructorId);
         courses.SaveToJsonCourses();
+        courses.load();
     }
     
    public void deleteCourse(int courseId) throws IOException
@@ -58,5 +60,44 @@ public class Instructor{
                 break;
         }
         courses.SaveToJsonCourses();
+        courses.load();
     }
+   
+   public void Createlesson(Course course,int lessonId, String title, String content) throws IOException
+   {
+   Lesson lesson = new Lesson(lessonId,title,content);
+   course.getLessons().add(lesson);
+        courses.SaveToJsonCourses();
+        courses.load();
+   }
+   
+   public void Editlesson(Course course,Lesson lesson,int lessonId, String title, String content) throws IOException
+   {
+   if(lessonId != 0)
+            lesson.setLessonId(lessonId);
+        if(title != null)
+            lesson.setTitle(title);
+        if(content != null)
+            lesson.setContent(content);
+        courses.SaveToJsonCourses();
+        courses.load();
+   }
+   
+   public void Deletelesson(Course course,int lessonId) throws IOException
+   {
+       
+   for(Lesson lesson : course.getLessons()){
+            if(lesson.getLessonId()==lessonId)
+                course.getLessons().remove(lesson);
+                break;
+        }
+        courses.SaveToJsonCourses();
+        courses.load();
+   }
+   
+   public ArrayList<Student> Viewenrolledstudents(Course course)
+   {
+       return course.getStudentsIncourse();
+   }
+   
 }

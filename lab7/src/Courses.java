@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Courses {
     private static ArrayList<Course> courses = new ArrayList<>();
-    private String FileName;
+     private String FileName;
 
     public Courses(String FileName)
     {
@@ -27,51 +27,79 @@ public class Courses {
     }
 
     public void load() throws IOException {
-        courses = new ArrayList<>();
+    courses = new ArrayList<>();
 
-        String jsonString = new String(Files.readAllBytes(Paths.get(FileName)));
+    String jsonString = new String(Files.readAllBytes(Paths.get(FileName)));
 
-        if (jsonString.trim().isEmpty() || jsonString.trim().equals("[]")) {
-            return;
-        }
-
-        try {
-            JSONArray jsonArray = new JSONArray(jsonString);
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject courseObj = jsonArray.getJSONObject(i);
-
-                Course course = new Course(
-                        courseObj.getString("courseId"),
-                        courseObj.getString("title"),
-                        courseObj.getString("description"),
-                        courseObj.getString("instructorId")
-                );
-
-                if (courseObj.has("lessons") && !courseObj.isNull("lessons")) {
-                    JSONArray lessonsArray = courseObj.getJSONArray("lessons");
-
-                    for (int j = 0; j < lessonsArray.length(); j++) {
-                        JSONObject lessonObj = lessonsArray.getJSONObject(j);
-
-                        Lesson lesson = new Lesson(
-                                lessonObj.getString("lessonId"),
-                                lessonObj.getString("title"),
-                                lessonObj.getString("content")
-                        );
-
-                        course.getLessons().add(lesson);
-                    }
-                }
-
-                courses.add(course);
-            }
-        } catch (Exception e) {
-            System.out.println("Error parsing courses JSON: " + e.getMessage());
-            e.printStackTrace();
-        }
+    if (jsonString.trim().isEmpty() || jsonString.trim().equals("[]")) {
+        return;
     }
 
+    try {
+        JSONArray jsonArray = new JSONArray(jsonString);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject courseObj = jsonArray.getJSONObject(i);
+
+            // Create course object
+            Course course = new Course(
+                    courseObj.getString("courseId"),
+                    courseObj.getString("title"),
+                    courseObj.getString("description"),
+                    courseObj.getString("instructorId")
+            );
+
+            // ---------------------------
+            // LOAD LESSONS
+            // ---------------------------
+            if (courseObj.has("lessons") && !courseObj.isNull("lessons")) {
+                JSONArray lessonsArray = courseObj.getJSONArray("lessons");
+
+                for (int j = 0; j < lessonsArray.length(); j++) {
+                    JSONObject lessonObj = lessonsArray.getJSONObject(j);
+
+                    Lesson lesson = new Lesson(
+                            lessonObj.getString("lessonId"),
+                            lessonObj.getString("title"),
+                            lessonObj.getString("content")
+                    );
+
+                    course.getLessons().add(lesson);
+                }
+            }
+
+            // ---------------------------
+            // LOAD STUDENTS IN COURSE
+            // ---------------------------
+            if (courseObj.has("studentsIncourse") && !courseObj.isNull("studentsIncourse")) {
+
+                JSONArray studentsArray = courseObj.getJSONArray("studentsIncourse");
+
+                for (int j = 0; j < studentsArray.length(); j++) {
+                    JSONObject studentObj = studentsArray.getJSONObject(j);
+
+                    Student student = new Student(
+                            studentObj.getString("userId"),
+                            studentObj.getString("username"),
+                            studentObj.getString("email"),
+                            studentObj.getString("passwordHash"),
+                            studentObj.getString("role"),
+                            studentObj.getInt("progress")
+                    );
+
+                    course.getStudentsIncourse().add(student);
+                }
+            }
+
+            // Add course to main list
+            courses.add(course);
+        }
+
+    } catch (Exception e) {
+        System.out.println("Error parsing courses JSON: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
     public void addCourse(Course course) {
         courses.add(course);
     }

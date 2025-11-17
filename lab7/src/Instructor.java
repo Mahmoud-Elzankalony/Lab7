@@ -20,7 +20,7 @@ public class Instructor{
 
     ArrayList<Course> createdCourses = new ArrayList<>();
     Courses courses = new Courses("courses.json");
-
+      User user=new User("users.json");
     public Instructor(String userId, String role, String username, String email, String passwordHash) throws IOException
     {
         this.userId = userId;
@@ -29,27 +29,47 @@ public class Instructor{
         this.email = email;
         this.passwordHash = passwordHash;
         courses.load();
+        user.load();
     }
 
     public void Createcourse(String courseId, String title, String description) throws IOException
     {
         Course course = new Course(courseId,title,description,this.userId);
         Courses courses = new Courses("courses.json");
+        User user=new User("users.json");
+                user.load();
+                courses.load();
         courses.addCourse(course);
-        courses.SaveToJsonCourses();
-        courses.load();
-    }
+        this.createdCourses.add(course);
+        courses.SaveToJsonCourses(); 
+    user.save();           }
 
     public void Editcourse(Course course, String courseId, String title, String description, String instructorId) throws IOException
     {
+        Courses courses = new Courses("courses.json");
+        Course cu = null;
+        User user=new User("users.json");
+                user.load();
+                courses.load();
+          for(Course c: this.createdCourses)
+              if(c.getCourseId().equals(course.getCourseId()))
+                   cu=c;
+          
         if(courseId != null) // Check against String instead of int
-            course.setCourseId(courseId);
-        if(!title.equals(""))
+        {course.setCourseId(courseId);
+        cu.setCourseId(courseId);
+        }
+        if(!title.equals("")){
             course.setTitle(title);
-        if(!description.equals(""))
+            cu.setTitle(title);}
+        if(!description.equals("")){
             course.setDescription(description);
+            cu.setDescription(description);}
+        
         courses.SaveToJsonCourses();
+        user.save();
         courses.load();
+        user.load();
     }
     public void deleteCourse(String courseId) throws IOException
     {Courses courses = new Courses("courses.json");

@@ -30,7 +30,7 @@ public class Student {
     // --- FIXED SEARCH METHOD ---
     public ArrayList<Course> search(String word) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/courses.json")));
+            String content = new String(Files.readAllBytes(Paths.get("courses.json")));
             JSONArray array = new JSONArray(content);
 
             ArrayList<Course> coursesOfSearch = new ArrayList<>();
@@ -98,7 +98,7 @@ public class Student {
 
     private void updateUserInUsersFile() {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/users.json")));
+            String content = new String(Files.readAllBytes(Paths.get("users.json")));
             JSONObject jsonObj = new JSONObject(content); 
 
             JSONArray students = jsonObj.getJSONArray("students");

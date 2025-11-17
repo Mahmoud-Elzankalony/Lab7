@@ -8,7 +8,7 @@ public class Course {
     private String description;
     private String instructorId;
     private ArrayList<Lesson> lessons = new ArrayList<>();;
-    private ArrayList<Student> studentsIncourse = new ArrayList<>();
+    private ArrayList<Student> studentsIncourse ;
 
     public void setCourseId(String courseId) {
         this.courseId = courseId;
@@ -32,6 +32,7 @@ public class Course {
         this.title = title;
         this.description = description;
         this.instructorId = instructorId;
+        studentsIncourse = new ArrayList<>();
 
 //        this.studentsIncourse = new ArrayList<>();
 //        this.lessons = new ArrayList<>();
